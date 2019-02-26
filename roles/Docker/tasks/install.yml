@@ -1,0 +1,20 @@
+---
+#install docker-engine
+- name: Install List of packages CentOS BASED
+  yum: name={{ item }} state=installed update_cache=yes
+  with_items:
+       - docker-engine
+  when: ansible_distribution == 'CentOS'
+
+- name: Install List of packages AMAZON BASED
+  yum: name={{ item }} state=installed update_cache=yes
+  with_items:
+       - docker
+  when: ansible_distribution == 'Amazon'
+
+
+- pip:
+    name: docker-py
+
+- name: Start-Docker-service
+  service: name=docker state=restarted enabled=yes

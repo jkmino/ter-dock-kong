@@ -1,0 +1,8 @@
+---
+#ALL_ANS FILE
+#this file contains all configurations for the platform
+- hosts: all
+  become: yes
+  gather_facts: True
+  roles:
+    - Docker
