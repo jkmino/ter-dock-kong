@@ -1,4 +1,5 @@
 # ter-dock-kong
+
 prueba terraform+docker+kong 
 
 
@@ -9,3 +10,8 @@ prueba terraform+docker+kong
   profile                 = "PROFILE-NAME"
 
   
+2.- Run the script runall.sh with the dir path to the AWS .PEN KEY
+
+sh runall.sh /home/user/AWSKEY.pem
+
+3.- 

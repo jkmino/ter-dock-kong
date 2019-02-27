@@ -1,0 +1,7 @@
+---
+# handlers file for Docker
+- name: yum-clean-metadata
+  command: yum clean metadata
+  args:
+    warn: no
+

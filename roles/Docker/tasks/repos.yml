@@ -1,0 +1,11 @@
+---
+- name: Add Docker repo CentOS BASED
+  yum_repository:
+    name: Docker
+    file: Docker
+    description: Docker LTS
+    baseurl: https://yum.dockerproject.org/repo/main/centos/7/
+    gpgkey: https://yum.dockerproject.org/gpg
+    gpgcheck: yes
+  when: ansible_distribution == 'CentOS' or ansible_distribution == 'Amazon'
+  notify: yum-clean-metadata
