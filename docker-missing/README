@@ -1,0 +1,5 @@
+1.- el problema se soluciona pasando un archivo ejecutable (script) en la ruta donde se observa el error (/usr/local/bin/missing)
+2.- para ver el problema resuelto correr el script fix-missing.sh 
+3.- para ver el scritp de entrypoint donde se hace la llamada al archivo ejecute:
+
+docker run --rm --entrypoint "/bin/cat" bennu/jobs:missing /usr/local/bin/entrypoint.sh
