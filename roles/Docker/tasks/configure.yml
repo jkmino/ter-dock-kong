@@ -1,0 +1,95 @@
+---
+- name: adding existing user {{ user }} to group docker
+  user: name={{ item }} groups=docker append=yes
+  with_items:
+       - ec2-user
+ 
+- name: pull image comicbook
+  docker_image:
+    name: jkmino/comicbook
+
+- name: pull image 
+  docker_image:
+    name: jkmino/comicbook
+
+- name: Create network
+  docker_network:
+    name: network_kong
+    ipam_options:
+      subnet: '172.60.30.0/24'
+      gateway: 172.60.30.1
+      iprange: '172.60.30.0/24'
+
+
+- name: Start a demoappcomicbook
+  docker_container:
+    name: comicbook
+    image: jkmino/comicbook
+    state: started
+    restart: yes
+    ports:
+     - "8050:3000"
+    networks:
+      - name: network_kong
+        ipv4_address: 172.60.30.100
+
+- name: Start a cassandraDB
+  docker_container:
+    name: cassandra
+    image: cassandra:3
+    state: started
+    restart: yes
+    ports:
+     - "9042:9042"
+    networks:
+      - name: network_kong
+        ipv4_address: 172.60.30.101
+
+- pause:
+    seconds: 15
+
+- name: Start a KONG migrations
+  docker_container:
+    name: kong-migrations
+    image: kong
+    state: started
+    restart: yes
+    command: kong migrations bootstrap && kong migrations up
+    networks:
+      - name: network_kong
+        ipv4_address: 172.60.30.110
+    env:
+        KONG_DATABASE: "cassandra"
+        KONG_CASSANDRA_CONTACT_POINTS: "cassandra"
+        KONG_PROXY_ACCESS_LOG: "/dev/stdout"
+        KONG_ADMIN_ACCESS_LOG: "/dev/stdout"
+        KONG_PROXY_ERROR_LOG: "/dev/stdout"
+        KONG_ADMIN_ERROR_LOG: "/dev/stdout"
+        KONG_ADMIN_LISTEN: "0.0.0.0:8001, 0.0.0.0:8444 ssl"
+
+- pause:
+    seconds: 15
+
+- name: Start a KONG
+  docker_container:
+    name: kong
+    image: kong
+    state: started
+    restart: yes
+    ports:
+     - "8000:8000"
+     - "8443:8443"
+     - "8001:8001"
+     - "8444:8444"
+    command: kong start
+    networks:
+      - name: network_kong
+        ipv4_address: 172.60.30.102
+    env:
+        KONG_DATABASE: "cassandra"
+        KONG_CASSANDRA_CONTACT_POINTS: "cassandra"
+        KONG_PROXY_ACCESS_LOG: "/dev/stdout"
+        KONG_ADMIN_ACCESS_LOG: "/dev/stdout"
+        KONG_PROXY_ERROR_LOG: "/dev/stdout"
+        KONG_ADMIN_ERROR_LOG: "/dev/stdout"
+        KONG_ADMIN_LISTEN: "0.0.0.0:8001, 0.0.0.0:8444 ssl"

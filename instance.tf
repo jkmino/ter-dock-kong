@@ -1,6 +1,6 @@
 resource "aws_instance" "test-instance" {
   ami = "${var.ami_id}"
-  instance_type = "t2.micro"
+  instance_type = "t2.small"
   key_name = "${var.ami_key_pair_name}"
   security_groups = ["${aws_security_group.ingress-all-test.id}"]
 
