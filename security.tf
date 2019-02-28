@@ -44,6 +44,16 @@ from_port = 8050
     protocol = "tcp"
   }
 
+ingress {
+    cidr_blocks = [
+      "0.0.0.0/0"
+    ]
+
+from_port = 8000
+    to_port = 8000
+    protocol = "tcp"
+  }
+
 // Terraform removes the default rule
   egress {
    from_port = 0

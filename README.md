@@ -14,4 +14,4 @@ prueba terraform+docker+kong
 
 sh runall.sh /home/user/AWSKEY.pem
 
-3.- 
+
