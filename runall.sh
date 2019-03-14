@@ -35,3 +35,5 @@ curl -i -X POST --url http://$public_ip:8001/services/comicbooks-service/routes 
 echo "\n"
 echo "\n*******Probando servicio"
 curl -i -X GET --url http://$public_ip:8000/ --header 'Host: '$public_ip''
+
+echo "\n \npara conectarse a la api de kong usar: http://"$public_ip":8000"
